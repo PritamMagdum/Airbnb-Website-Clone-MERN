@@ -36,4 +36,20 @@ app.post("/register", async (req, res) => {
     res.status(400).json(error.message);
   }
 });
+
+app.use("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const userDoc = await User.findOne({ email });
+  if (userDoc) {
+    const passOk = bcrypt.compareSync(password, userDoc.password);
+    if (passOk) {
+      res.json("Password is Matched!");
+    } else {
+      res.status(200).json("Password did not matched!");
+    }
+  } else {
+    res.status(404).json("Not Found");
+  }
+});
 app.listen(8080);
