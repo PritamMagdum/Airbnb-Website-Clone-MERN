@@ -1,49 +1,41 @@
-import { Button, Checkbox, Label, TextInput, Textarea } from "flowbite-react";
-import { Link, useParams } from "react-router-dom";
+import { Button, Label, TextInput, Textarea } from "flowbite-react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Perks from "./Perks";
 import { useState } from "react";
 import axios from "axios";
+import PhotosUploader from "./PhotosUploader";
 
 export default function Places() {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [photoLink, setPhotoLink] = useState("");
+  // const [photoLink, setPhotoLink] = useState("");
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+  // const [redirect, setRedirect] = useState("");
 
-  console.log({ photoLink });
+  // console.log({ photoLink });
   // console.log(action);
-  async function addPhotoByLink(e) {
+  const addNewPlace = async (e) => {
     e.preventDefault();
-    const { data: filename } = await axios.post("/upload-by-link", {
-      link: photoLink,
+    await axios.post("/places", {
+      title,
+      address,
+      addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
     });
-    setAddedPhotos((prev) => {
-      return [...prev, filename];
-    });
-    setPhotoLink("");
-  }
-
-  const handleUploadPhoto = (e) => {
-    const files = e.target.files;
-    const data = new FormData();
-    data.set("photos", files);
-    axios
-      .post("/upload", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => {
-        const { data: filename } = response;
-        setAddedPhotos((prev) => {
-          return [...prev, filename];
-        });
-      });
+    // setRedirect(true);
+    <Navigate to="/account/places" />;
   };
 
   return (
@@ -76,7 +68,7 @@ export default function Places() {
       )}
       {action === "new" && (
         <div className="">
-          <form className="flex flex-col gap-2 px-5">
+          <form className="flex flex-col gap-2 px-5" onSubmit={addNewPlace}>
             <Label className="text-xl">Title</Label>
             <TextInput
               type="text"
@@ -101,55 +93,10 @@ export default function Places() {
             <span className="text-sm text-gray-600 font-medium">
               more = better
             </span>
-            <div className="flex flex-row justify-between gap-2">
-              <TextInput
-                placeholder="add photo using link.....jpg"
-                className="w-full"
-                value={photoLink}
-                onChange={(e) => setPhotoLink(e.target.value)}
-              />
-              <Button onClick={addPhotoByLink} className="min-w-28">
-                Add Photo
-              </Button>
-            </div>
-
-            <div className="grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              {addedPhotos.length > 0 &&
-                addedPhotos.map((link) => (
-                  <div>
-                    <img
-                      className="rounded-2xl"
-                      src={`http://localhost:8080/uploads/${link}`}
-                      alt={link}
-                    />
-                  </div>
-                ))}
-              <label
-                color="transparent"
-                className="flex items-center rounded-2xl border justify-center cursor-pointer text-xl"
-              >
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleUploadPhoto}
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6 mx-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z"
-                  />
-                </svg>
-                Upload
-              </label>
-            </div>
+            <PhotosUploader
+              addedPhotos={addedPhotos}
+              onChange={setAddedPhotos}
+            />
             <Label className="text-xl">Description</Label>
             <span className="text-sm text-gray-600 font-medium">
               description of the place
@@ -205,7 +152,11 @@ export default function Places() {
                 />
               </div>
             </div>
-            <Button gradientDuoTone="pinkToOrange" className="my-4">
+            <Button
+              type="submit"
+              gradientDuoTone="pinkToOrange"
+              className="my-4"
+            >
               Save
             </Button>
           </form>
