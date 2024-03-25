@@ -21,6 +21,12 @@ export default function AccountPage() {
     subpage = "profile";
   }
 
+  const handleLogout = async () => {
+    await axios.post("/logout");
+    setUser(null);
+    setRedirect(true);
+  };
+
   if (redirect) {
     return <Navigate to="/login" />;
   }
