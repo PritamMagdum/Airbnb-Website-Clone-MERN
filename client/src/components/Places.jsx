@@ -30,6 +30,22 @@ export default function Places() {
     setPhotoLink("");
   }
 
+  const handleUploadPhoto = (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.set("photos", files);
+    axios
+      .post("/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data: filename } = response;
+        setAddedPhotos((prev) => {
+          return [...prev, filename];
+        });
+      });
+  };
+
   return (
     <div className="">
       {action !== "new" && (
