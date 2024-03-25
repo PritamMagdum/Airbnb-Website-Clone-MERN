@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const User = require("./models/User.js");
+const imageDownloader = require("image-downloader");
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -79,5 +80,16 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("token removed");
+});
+
+// console.log({ __dirname });
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.json(newName);
 });
 app.listen(8080);
