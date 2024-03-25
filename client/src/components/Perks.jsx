@@ -1,10 +1,18 @@
 import { Checkbox } from "flowbite-react";
 
-export default function Perks({ selected, onChnage }) {
+export default function Perks({ selected, onChange }) {
+  const handleClick = (e) => {
+    const { checked, name } = e.target;
+    if (checked) {
+      onChange([...selected, name]);
+    } else {
+      onChange([...selected.filter((selectedName) => selectedName !== name)]);
+    }
+  };
   return (
-    <div>
+    <>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="wifi" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -23,7 +31,7 @@ export default function Perks({ selected, onChnage }) {
         <span>WIFI</span>
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="parking" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -42,7 +50,7 @@ export default function Perks({ selected, onChnage }) {
         <span>Free Parking</span>
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="tv" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -61,7 +69,7 @@ export default function Perks({ selected, onChnage }) {
         <span>TV</span>
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="entrance" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -80,7 +88,7 @@ export default function Perks({ selected, onChnage }) {
         <span>Private entrance</span>
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="breakfast" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -99,7 +107,7 @@ export default function Perks({ selected, onChnage }) {
         <span>Free Breakfast</span>
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <Checkbox />
+        <Checkbox name="radio" onChange={handleClick} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -117,6 +125,6 @@ export default function Perks({ selected, onChnage }) {
 
         <span>Radio</span>
       </label>
-    </div>
+    </>
   );
 }
