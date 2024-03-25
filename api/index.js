@@ -4,12 +4,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const User = require("./models/User.js");
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
@@ -48,9 +50,10 @@ app.use("/login", async (req, res) => {
       jwt.sign(
         { email: userDoc.email, id: userDoc._id },
         process.env.JWT_SECRET_KEY,
+        {},
         (err, token) => {
           if (err) throw err;
-          res.cookie("token", token).json("Password is Matched!");
+          res.cookie("token", token).json(userDoc);
         }
       );
     } else {
@@ -59,5 +62,22 @@ app.use("/login", async (req, res) => {
   } else {
     res.status(404).json("Not Found");
   }
+});
+
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (err, userData) => {
+      if (err) throw err;
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
+  }
+});
+
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json("token removed");
 });
 app.listen(8080);
