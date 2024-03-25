@@ -7,12 +7,15 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const User = require("./models/User.js");
 const imageDownloader = require("image-downloader");
+const multer = require("multer");
+const fs = require("fs");
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
@@ -91,5 +94,39 @@ app.post("/upload-by-link", async (req, res) => {
     dest: __dirname + "/uploads/" + newName,
   });
   res.json(newName);
+});
+
+const photosMiddleware = multer({ dest: "uploads/" });
+// app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+//   const uploadedFiles = [];
+//   for (let i = 0; i < req.files.length; i++) {
+//     const { path, originalname } = req.files[i];
+//     console.log("path ->", path);
+//     console.log("originalname ->", originalname);
+//     const parts = originalname.split(".");
+//     const ext = parts[parts.length - 1];
+//     const newPath = path + "." + ext;
+//     console.log("newPath->", newPath);
+//     // fs.renameSync(path, newPath);
+//     // console.log("newPath is -> ", newPath.basename());
+//     // uploadedFiles.push(newPath.replace("uploads/", ""));
+//   }
+//   res.json(uploadedFiles);
+// });
+
+app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path: filePath, originalname } = req.files[i];
+    const filenameIndex = filePath.lastIndexOf("\\");
+    const filename = filePath.substring(filenameIndex + 1);
+    const extIndex = originalname.lastIndexOf(".");
+    const ext = originalname.substring(extIndex);
+    const newFilename = filename + ext;
+    const newPath = filePath + ext;
+    fs.renameSync(filePath, newPath);
+    uploadedFiles.push(newFilename);
+  }
+  res.json(uploadedFiles);
 });
 app.listen(8080);
