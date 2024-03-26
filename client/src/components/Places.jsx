@@ -49,9 +49,13 @@ export default function Places() {
               className="flex cursor-pointer gap-4 p-4 bg-gray-100 rounded-2xl"
               key={index}
             >
-              <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+              <div className="flex  w-32 h-32 bg-gray-300 grow shrink-0 rounded-md">
                 {place.photos.length > 0 && (
-                  <img src={place.photos[0]} alt="Place Image" />
+                  <img
+                    className="object-cover rounded-md"
+                    src={`http://localhost:8080/uploads/${place.photos[0]}`}
+                    alt="Place Image"
+                  />
                 )}
               </div>
               <div className="">
