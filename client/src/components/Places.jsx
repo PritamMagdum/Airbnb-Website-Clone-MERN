@@ -2,8 +2,18 @@ import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 import AccountNavbar from "./AccountNavbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Places() {
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    axios.get("/places").then(({ data }) => {
+      setPlaces(data);
+    });
+  }, []);
+
   return (
     <div className="">
       <AccountNavbar />
