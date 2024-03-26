@@ -41,7 +41,7 @@ export default function PlacesForm() {
   const savePlace = async (e) => {
     e.preventDefault();
 
-    await axios.post("/places", {
+    const placeData = {
       title,
       address,
       addedPhotos,
@@ -51,8 +51,16 @@ export default function PlacesForm() {
       checkIn,
       checkOut,
       maxGuests,
-    });
-    setRedirect(true);
+    };
+
+    if (id) {
+      // update the place
+      await axios.put("/places", { id, ...placeData });
+    } else {
+      // create a new place
+      await axios.post("/places", placeData);
+      setRedirect(true);
+    }
   };
 
   if (redirect) {
