@@ -9,7 +9,7 @@ export default function Places() {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios.get("/places").then(({ data }) => {
+    axios.get("/user-places").then(({ data }) => {
       setPlaces(data);
     });
   }, []);
@@ -58,7 +58,7 @@ export default function Places() {
                   />
                 )}
               </div>
-              <div className="">
+              <div className="grow-0 shrink">
                 <h2 className="text-xl">{place.title}</h2>
                 <p className="text-sm mt-2">{place.description}</p>
               </div>
