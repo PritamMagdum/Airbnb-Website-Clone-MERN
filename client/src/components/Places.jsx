@@ -41,6 +41,26 @@ export default function Places() {
           </Button>
         </Link>
       </div>
+      <div className="my-4 px-4">
+        {places.length > 0 &&
+          places.map((place, index) => (
+            <Link
+              to={`/account/places/${place._id}`}
+              className="flex cursor-pointer gap-4 p-4 bg-gray-100 rounded-2xl"
+              key={index}
+            >
+              <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+                {place.photos.length > 0 && (
+                  <img src={place.photos[0]} alt="Place Image" />
+                )}
+              </div>
+              <div className="">
+                <h2 className="text-xl">{place.title}</h2>
+                <p className="text-sm mt-2">{place.description}</p>
+              </div>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 }
