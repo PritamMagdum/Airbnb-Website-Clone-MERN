@@ -1,16 +1,17 @@
 import { Button, Label, TextInput, Textarea } from "flowbite-react";
 import PhotosUploader from "./PhotosUploader";
 import Perks from "./Perks";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AccountNavbar from "./AccountNavbar";
 
 export default function PlacesForm() {
+  const { id } = useParams();
+  console.log(id);
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  // const [photoLink, setPhotoLink] = useState("");
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
@@ -19,8 +20,27 @@ export default function PlacesForm() {
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
 
-  const addNewPlace = async (e) => {
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    axios.get(`/places/${id}`).then((response) => {
+      const { data } = response;
+      setTitle(data.title);
+      setAddress(data.address);
+      setAddedPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
+
+  const savePlace = async (e) => {
     e.preventDefault();
+
     await axios.post("/places", {
       title,
       address,
@@ -42,12 +62,12 @@ export default function PlacesForm() {
   return (
     <div className="">
       <AccountNavbar />
-      <form className="flex flex-col gap-2 px-5" onSubmit={addNewPlace}>
+      <form className="flex flex-col gap-2 px-5" onSubmit={savePlace}>
         <Label className="text-xl">Title</Label>
         <TextInput
           type="text"
           placeholder="example - My favorite place"
-          // value={title}
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <span className="text-sm text-gray-600 font-medium">
@@ -57,7 +77,7 @@ export default function PlacesForm() {
         <TextInput
           type="text"
           placeholder="address"
-          // value={address}
+          value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
         <span className="text-sm text-gray-600 font-medium">
@@ -71,7 +91,7 @@ export default function PlacesForm() {
           description of the place
         </span>
         <Textarea
-          // value={description}
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={5}
         />
@@ -88,7 +108,7 @@ export default function PlacesForm() {
         </span>
         <Textarea
           rows={5}
-          // value={extraInfo}
+          value={extraInfo}
           onChange={(e) => setExtraInfo(e.target.value)}
         />
         <Label className="text-xl">Check In & Out times</Label>
@@ -101,14 +121,14 @@ export default function PlacesForm() {
             <Label className="text-sm">Check in time</Label>
             <TextInput
               placeholder="12:00"
-              // value={checkIn}
+              value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
             />
           </div>
           <div className="">
             <Label className="text-sm">Check out time</Label>
             <TextInput
-              // value={checkOut}
+              value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
             />
           </div>
@@ -116,7 +136,7 @@ export default function PlacesForm() {
             <Label className="text-sm">Number of guests</Label>
             <TextInput
               type="number"
-              // value={maxGuests}
+              value={maxGuests}
               onChange={(e) => setMaxGuests(e.target.value)}
             />
           </div>
