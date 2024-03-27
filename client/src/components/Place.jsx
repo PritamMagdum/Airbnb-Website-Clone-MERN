@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "flowbite-react";
+import BookingWidget from "./BookingWidget";
 
 export default function Place() {
   const { id } = useParams();
@@ -90,6 +91,8 @@ export default function Place() {
           <div className="a">
             {place.photos?.[0] && (
               <img
+                onClick={() => setShowAllPhotos(true)}
+                className="cursor-pointer"
                 src={`http://localhost:8080/uploads/${place.photos[0]}`}
                 alt=""
               />
@@ -99,6 +102,8 @@ export default function Place() {
           <div className=" grid">
             {place.photos?.[1] && (
               <img
+                onClick={() => setShowAllPhotos(true)}
+                className="cursor-pointer"
                 src={`http://localhost:8080/uploads/${place.photos[1]}`}
                 alt=""
               />
@@ -106,7 +111,8 @@ export default function Place() {
             {place.photos?.[2] && (
               <div className="overflow-hidden">
                 <img
-                  className="relative top-2"
+                  onClick={() => setShowAllPhotos(true)}
+                  className="relative top-2 cursor-pointer"
                   src={`http://localhost:8080/uploads/${place.photos[2]}`}
                   alt=""
                 />
@@ -134,6 +140,27 @@ export default function Place() {
           </svg>
           Show More photos
         </button>
+      </div>
+
+      <div className="mt-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
+        <div className="">
+          <div className="mb-4">
+            <h2 className="font-semibold text-xl">Description</h2>
+            {place.description}
+          </div>
+          Check-in: {place.checkIn} <hr className="my-2" />
+          Check-out: {place.checkOut} <hr className="my-2" />
+          Max number of guests: {place.maxGuests}
+        </div>
+        <BookingWidget place={place} />
+      </div>
+      <div className="my-4">
+        <div className="">
+          <h2 className="font-semibold text-xl">Extra Info</h2>
+        </div>
+        <div className="my-1 text-sm text-gray-700 leading-4">
+          {place.extraInfo}
+        </div>
       </div>
     </div>
   );
