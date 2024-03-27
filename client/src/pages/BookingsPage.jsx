@@ -18,19 +18,19 @@ export default function BookingsPage() {
     <div>
       <AccountNavbar />
       <div className="px-6">
-        {bookings.length > 0 &&
-          bookings.map((booking, index) => (
+        {bookings?.length > 0 &&
+          bookings?.map((booking, index) => (
             <Link
               to={`/account/bookings/${booking._id}`}
               key={index}
-              className="flex gap-4 bg-gray-200 rounded-xl overflow-hidden"
+              className="flex gap-4 my-4 bg-gray-200 rounded-xl overflow-hidden"
             >
               <div className="w-48">
                 <PlaceImage place={booking.place} />
               </div>
               <div className="py-1 grow pr-3">
                 <h2 className="font-medium text-xl py-1">
-                  {booking.place.title}
+                  {booking?.place?.title}
                 </h2>
                 <div className="flex gap-2 border-t border-gray-300 py-1">
                   <div className="flex gap-1 items-center">

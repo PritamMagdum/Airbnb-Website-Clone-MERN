@@ -7,25 +7,16 @@ export default function Header() {
 
   return (
     <div className="">
-      <header className="p-4 flex justify-between">
+      <header className="px-8 py-4 flex justify-between">
         <Link to="/" className="flex items-center gap-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-8 h-6 -rotate-90"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-            />
-          </svg>
-          <span className="text-xl font-semibold">Airbnb</span>
+          <img
+            src="https://a0.muscache.com/airbnb/static/logotype_favicon-21cc8e6c6a2cca43f061d2dcabdf6e58.ico"
+            alt=""
+          />
+
+          <span className="font-bold text-2xl text-primary">airbnb</span>
         </Link>
-        <div className="flex border gap-2 border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
+        <div className="md:flex border hidden gap-2 border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
           <div className="">Anywhere</div>
           <div className="border-l border-gray-300"></div>
           <div className="">Any week</div>
@@ -48,7 +39,10 @@ export default function Header() {
             </svg>
           </button>
         </div>
-        <div className="flex border gap-2 border-gray-300 rounded-full py-2 px-4 items-center">
+        <Link
+          to={user ? "/account" : "/login"}
+          className="flex border gap-2 border-gray-300 rounded-full py-2 px-4 items-center"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -83,7 +77,7 @@ export default function Header() {
             </div>
           </Link>
           {!!user && <div>{user.name}</div>}
-        </div>
+        </Link>
       </header>
     </div>
   );

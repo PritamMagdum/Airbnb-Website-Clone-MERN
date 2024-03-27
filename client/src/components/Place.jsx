@@ -136,9 +136,7 @@ export default function Place() {
         <div className="">
           <h2 className="font-semibold text-xl">Extra Info</h2>
         </div>
-        <div className="my-1 text-sm text-gray-700 leading-4">
-          {place.extraInfo}
-        </div>
+        <div className="my-1  text-gray-700">{place.extraInfo}</div>
       </div>
     </div>
   );

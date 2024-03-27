@@ -8,7 +8,7 @@ export default function AccountNavbar() {
   }
 
   return (
-    <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
+    <nav className=" w-full flex justify-center mt-8 gap-2 mb-8">
       <Link
         className={` py-2 px-6 inline-flex gap-1 ${
           subpage === "profile"

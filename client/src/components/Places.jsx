@@ -47,10 +47,10 @@ export default function Places() {
           places.map((place, index) => (
             <Link
               to={`/account/places/${place._id}`}
-              className="flex cursor-pointer gap-4 p-4 bg-gray-100 rounded-2xl"
+              className="flex my-4 cursor-pointer gap-4 p-4 bg-gray-100 rounded-2xl"
               key={index}
             >
-              <div className="flex  w-32 h-32 bg-gray-300 grow shrink-0 rounded-md">
+              <div className="flex w-32 bg-gray-300 grow shrink-0 rounded-md">
                 <PlaceImage place={place} />
               </div>
               <div className="grow-0 shrink">
