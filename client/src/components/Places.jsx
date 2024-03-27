@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AccountNavbar from "./AccountNavbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PlaceImage from "./PlaceImage";
 
 export default function Places() {
   const [places, setPlaces] = useState([]);
@@ -50,13 +51,7 @@ export default function Places() {
               key={index}
             >
               <div className="flex  w-32 h-32 bg-gray-300 grow shrink-0 rounded-md">
-                {place.photos.length > 0 && (
-                  <img
-                    className="object-cover rounded-md"
-                    src={`http://localhost:8080/uploads/${place.photos[0]}`}
-                    alt="Place Image"
-                  />
-                )}
+                <PlaceImage place={place} />
               </div>
               <div className="grow-0 shrink">
                 <h2 className="text-xl">{place.title}</h2>

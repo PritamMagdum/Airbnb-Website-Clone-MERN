@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "flowbite-react";
 import BookingWidget from "./BookingWidget";
+import PlaceGallery from "./PlaceGallery";
+import AddressLink from "./AddressLink";
 
 export default function Place() {
   const { id } = useParams();
@@ -56,36 +58,12 @@ export default function Place() {
       </div>
     );
   }
+
   return (
     <div className="mt-4 py-4 px-8">
       <p className="text-3xl font-bold">{place.title}</p>
-      <a
-        href={`https://maps.google.com/?q=${place.address}`}
-        target="_blank"
-        className="flex gap-1 my-1 font-semibold underline"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-          />
-        </svg>
-
-        {place.address}
-      </a>
+      <AddressLink>{place.address}</AddressLink>
+      {/* <PlaceGallery place={place} /> */}
       <div className="relative my-4">
         <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
           <div className="a">
